@@ -27,7 +27,7 @@ public class SecurityConfig {
         http
                 // no session will be created or used by Spring Security
                 .sessionManagement()
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                    .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
 
                 .and()
 

@@ -29,6 +29,7 @@ public class Role {
     )
     private Set<Privilege> privileges;
 
-    @OneToMany(mappedBy = "role", fetch = FetchType.LAZY)
+    @EqualsAndHashCode.Exclude
+    @OneToMany(mappedBy = "role")
     private Set<User> users = new HashSet<>();
 }

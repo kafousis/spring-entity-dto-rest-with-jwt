@@ -20,6 +20,7 @@ public class Privilege {
     private String name;
     private PrivilegeCategory category;
 
+    @EqualsAndHashCode.Exclude
     @ManyToMany(mappedBy = "privileges")
     private Set<Role> roles;
 }
