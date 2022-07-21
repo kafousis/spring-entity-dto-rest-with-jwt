@@ -1,5 +1,7 @@
 package com.github.kafousis.security;
 
+import com.github.kafousis.repositories.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -8,6 +10,8 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
+import static org.springframework.http.HttpMethod.GET;
+
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
@@ -15,6 +19,13 @@ public class SecurityConfig {
     private static final String[] AUTH_WHITELIST = {
             "/h2-console/**"
     };
+
+    // default authentication manager created by spring security
+    // picks up userDetailsService and passwordEncoder automatically
+    // as long as they are registered as Beans
+
+    @Autowired
+    private UserRepository userRepository;
 
     @Bean
     public BCryptPasswordEncoder passwordEncoder(){
@@ -44,7 +55,26 @@ public class SecurityConfig {
                 .and()
 
                 .authorizeRequests()
-                    .antMatchers(AUTH_WHITELIST).permitAll();
+                    .antMatchers(AUTH_WHITELIST).permitAll()
+                    .antMatchers(GET, "/token/refresh", "/token/refresh/**").permitAll()
+                    // .anyRequest().authenticated() is blocking access to default /error page
+                    // the line below permits returning 403 Forbidden with non-empty body
+                    .antMatchers("/error").permitAll()
+                .anyRequest().authenticated()
+
+                .and()
+
+                // 401_Unauthorized is returned when the client provides no credentials or invalid credentials
+                // 403_Forbidden is returned when a client has valid credentials but not enough privileges to perform an action on a resource
+
+                // return 401 UNAUTHORIZED instead of 403 FORBIDDEN when no credentials provided
+                .exceptionHandling().authenticationEntryPoint(new MyAuthenticationEntryPoint())
+
+                .and()
+
+                // local authenticationManager can be accessed in a custom DSL
+                // we need that instance for the authentication filter
+                .apply(new JwtConfigurer(userRepository));
 
         return http.build();
     }
