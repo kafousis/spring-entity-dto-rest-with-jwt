@@ -61,17 +61,20 @@ public class UserDto {
 
     @JsonProperty("created_at")
     @Schema(type = "string", example = "2021-09-01 00:00:00")
-    @JsonSerialize(using = LocalDateTimeSerializer.class)
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime createdAt;
 
-    @JsonProperty("created_at")
+    @JsonProperty("updated_at")
     @Schema(type = "string", example = "2021-09-01 00:00:00")
-    @JsonSerialize(using = LocalDateTimeSerializer.class)
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime updatedAt;
 
-    @Valid
+    // If @Valid annotation is used here
+    // we have to send role obj with corresponding privileges
+    // every time we want to create or update a User obj
+    // without @Valid annotation we have to send only role_id
+
+    //@Valid
     @NotNull(message = "User must have a Role.")
     private RoleDto role;
 }

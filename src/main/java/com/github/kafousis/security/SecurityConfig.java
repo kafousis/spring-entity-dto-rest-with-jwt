@@ -17,6 +17,18 @@ import static org.springframework.http.HttpMethod.GET;
 public class SecurityConfig {
 
     private static final String[] AUTH_WHITELIST = {
+            // -- Swagger UI v2
+            "/v2/api-docs",
+            "/swagger-resources",
+            "/swagger-resources/**",
+            "/configuration/ui",
+            "/configuration/security",
+            "/swagger-ui.html",
+            "/webjars/**",
+            // -- Swagger UI v3 (OpenAPI)
+            "/v3/api-docs/**",
+            "/swagger-ui/**",
+            // other public endpoints of your API may be appended to this array
             "/h2-console/**"
     };
 
@@ -57,6 +69,7 @@ public class SecurityConfig {
                 .authorizeRequests()
                     .antMatchers(AUTH_WHITELIST).permitAll()
                     .antMatchers(GET, "/token/refresh", "/token/refresh/**").permitAll()
+                    .antMatchers("/api/roles", "/api/privileges").hasAnyRole("ADMIN", "MANAGER")
                     // .anyRequest().authenticated() is blocking access to default /error page
                     // the line below permits returning 403 Forbidden with non-empty body
                     .antMatchers("/error").permitAll()

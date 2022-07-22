@@ -66,6 +66,7 @@ public class UserServiceImpl implements UserService {
         String passwordEncrypted = passwordEncoder.encode(passwordPlain);
         user.setPassword(passwordEncrypted);
         user.setCreatedAt(LocalDateTime.now());
+        user.setUpdatedAt(LocalDateTime.now());
         user.setEnabled(true);
         userRepository.save(user);
     }
@@ -76,9 +77,11 @@ public class UserServiceImpl implements UserService {
         // ensure that the correct user is updated
         updatedUser.setId(storedUser.getId());
         updatedUser.setCreatedAt(storedUser.getCreatedAt());
+        updatedUser.setUpdatedAt(LocalDateTime.now());
 
         if (StringUtils.empty(updatedUser.getPassword())) {
             // updatedUser has empty password means that password was not updated
+            log.info("Password remains the same");
             updatedUser.setPassword(storedUser.getPassword());
         }else{
             // password is updated and needs to be encrypted

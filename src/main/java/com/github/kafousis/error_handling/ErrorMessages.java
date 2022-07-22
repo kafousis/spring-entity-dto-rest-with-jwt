@@ -3,6 +3,7 @@ package com.github.kafousis.error_handling;
 public class ErrorMessages {
     public static final String API_ERROR_MESSAGE_TITLE = "API Internal Error";
     public static final String ERROR_USER_NOT_FOUND = "User not found";
+    public static final String ERROR_USER_IMAGE_NOT_FOUND = "User image not found";
     public static final String ERROR_INVALID_FILE_FORMAT = "Invalid file format";
     public static final String ERROR_FILE_UPLOAD_FAILED = "File upload failed";
     public static final String ERROR_FILE_DOWNLOAD_FAILED = "File download failed";

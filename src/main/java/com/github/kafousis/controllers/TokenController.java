@@ -5,6 +5,8 @@ import com.github.kafousis.entities.User;
 import com.github.kafousis.repositories.UserRepository;
 import com.github.kafousis.security.JwtProperties;
 import com.github.kafousis.utils.SecurityUtils;
+import io.swagger.v3.oas.annotations.Hidden;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,7 +23,7 @@ import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static org.springframework.http.HttpStatus.FORBIDDEN;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
-@RestController @Slf4j
+@RestController @Slf4j @Hidden
 public class TokenController {
 
     @Autowired
