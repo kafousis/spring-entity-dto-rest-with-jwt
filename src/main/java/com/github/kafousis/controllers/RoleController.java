@@ -3,6 +3,7 @@ package com.github.kafousis.controllers;
 import com.github.kafousis.dtos.RoleDto;
 import com.github.kafousis.entities.Role;
 import com.github.kafousis.services.RoleService;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.modelmapper.ModelMapper;
@@ -30,6 +31,7 @@ public class RoleController {
     private ModelMapper modelMapper;
 
     @GetMapping
+    @Operation(summary = "Get all roles")
     public ResponseEntity<?> getRoles(){
 
         List<Role> roles = roleService.getRoles();
